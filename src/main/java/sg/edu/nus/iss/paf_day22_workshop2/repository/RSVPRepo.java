@@ -19,6 +19,7 @@ public class RSVPRepo {
     private String listAllRSVP = "select * from rsvps";
     private String listRSVPbyName = "select * from rsvps where full_name=? ";
     private String countTotalRSVP = "select count(*) from rsvps";
+    private String addNewRSVP = "insert into rsvps (full_name, email, phone, confirmation_date, comments) value(?,?,?,?,?)";
 
     public List<RSVP> listAllRSVP(){
         return template.query(listAllRSVP, BeanPropertyRowMapper.newInstance(RSVP.class));
@@ -35,6 +36,17 @@ public class RSVPRepo {
 
     public Integer countTotalRSVPsql(){
         return template.queryForObject(countTotalRSVP, Integer.class);
+    }
+
+    public Boolean addNewRSVP(RSVP rsvp){
+        Integer result = template.update(addNewRSVP, 
+            rsvp.getFullName(),
+            rsvp.getEmail(),
+            rsvp.getPhone(),
+            rsvp.getConfirmationDate(),
+            rsvp.getComments()
+            );
+        return result > 0 ? true:false;
     }
 
 

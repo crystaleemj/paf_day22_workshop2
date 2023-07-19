@@ -45,4 +45,8 @@ public class RSVPSvc {
             .add("errmsg", "Total number of RSVP count: " + count);
             return object.build();
     }
+
+    public Boolean addNewRSVP(RSVP rsvp){
+        return repo.addNewRSVP(rsvp);
+    }
 }
