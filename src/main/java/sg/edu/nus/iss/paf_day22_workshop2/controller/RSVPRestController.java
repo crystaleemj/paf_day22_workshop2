@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 
@@ -38,14 +41,14 @@ public class RSVPRestController {
     }
 
     @GetMapping(path = "/rsvp")
-    public ResponseEntity<?> listRSVPbyNamEntity(@RequestParam String name) {
+    public ResponseEntity<?> listRSVPbyNamEntity(@RequestParam String q) {
 
         List<RSVP> list = new ArrayList<>();
 
         if (list.isEmpty()) {
-            return new ResponseEntity<>(svc.noRSVPFoundError(name).toString(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(svc.noRSVPFoundError(q).toString(), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(svc.listRSVPbyName(name), HttpStatus.OK);
+        return new ResponseEntity<>(svc.listRSVPbyName(q), HttpStatus.OK);
     }
 
     @GetMapping(path = "/rsvps/count")
@@ -62,6 +65,19 @@ public class RSVPRestController {
             return new ResponseEntity<>("Error adding RSVP", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Successfully added RSVP", HttpStatus.CREATED);
+    }
+
+    @PutMapping(path = "/rsvp/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> updateRSVP(@PathVariable Integer id, RSVP rsvp) {
+        RSVP r = svc.listRSVPbyID(id);
+
+        if (r == null) {
+            return new ResponseEntity<String>("errmsg", HttpStatus.NOT_FOUND);
+        }
+
+        svc.updateRSVP(rsvp);
+        
+        return new ResponseEntity<String>("Successfully updated RSVP", HttpStatus.CREATED);
     }
     
     

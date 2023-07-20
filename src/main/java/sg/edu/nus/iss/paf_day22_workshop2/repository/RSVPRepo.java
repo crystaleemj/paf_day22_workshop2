@@ -20,6 +20,8 @@ public class RSVPRepo {
     private String listRSVPbyName = "select * from rsvps where full_name=? ";
     private String countTotalRSVP = "select count(*) from rsvps";
     private String addNewRSVP = "insert into rsvps (full_name, email, phone, confirmation_date, comments) value(?,?,?,?,?)";
+    private String updateRSVP = "update rsvps set full_name=? email=? phone=? confirmation_date=? comments=? where id=?";
+    private String listRSVPbyID = "select * from rsvps where id=?";
 
     public List<RSVP> listAllRSVP(){
         return template.query(listAllRSVP, BeanPropertyRowMapper.newInstance(RSVP.class));
@@ -47,6 +49,21 @@ public class RSVPRepo {
             rsvp.getComments()
             );
         return result > 0 ? true:false;
+    }
+
+    public Boolean updateRSVP(RSVP rsvp){
+        Integer result = template.update(updateRSVP, 
+            rsvp.getFullName(),
+            rsvp.getEmail(),
+            rsvp.getPhone(),
+            rsvp.getConfirmationDate(),
+            rsvp.getComments()
+        );
+        return result > 0 ? true:false;
+    }
+
+    public RSVP listRSVPbyID(Integer id){
+        return template.queryForObject(listRSVPbyID, RSVP.class);
     }
 
 

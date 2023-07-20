@@ -49,4 +49,12 @@ public class RSVPSvc {
     public Boolean addNewRSVP(RSVP rsvp){
         return repo.addNewRSVP(rsvp);
     }
+
+    public Boolean updateRSVP(RSVP rsvp){
+        return repo.updateRSVP(rsvp);
+    }
+
+    public RSVP listRSVPbyID(Integer id){
+        return repo.listRSVPbyID(id);
+    }
 }
